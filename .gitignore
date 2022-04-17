@@ -1,0 +1,17 @@
+# Mac files
+.DS_Store
+
+
+# Cache
+.ipynb_checkpoints/
+.idea/
+__pycache__/
+
+# Old code
+old/
+
+# Environment
+.env
+dev.env
+prod.env
+.flaskenv
