@@ -36,50 +36,74 @@ def home():
 
     uni_list = []
 
+    soup = ''
+    # Start time
     start = time.time()
-    for i in range(1, 6050):
 
-        url = RMP_UNI + str(i)
-        title = ''
-        x = 0
-        retry_count = 2  # maximum tries
-        while retry_count > 0:
+    # Number of batches of universities
+    batch = 1
+
+    # Batch size
+    batch_size = 2000
+
+    while batch <= 5:
+
+        i = 1 if batch == 1 else ((batch * batch_size) + 1)
+
+        while i < batch_size:
+
             try:
-                r = requests.get(url)
-                soup = BeautifulSoup(r.content, 'html.parser')
-                x += 1
-                title = soup.find_all('div', {'class': 'result-text'})[0].getText()
-                retry_count = 0
+                url = RMP_UNI + str(i)
+                title = ''
+                x = 0
+                retry_count = 2  # maximum tries
+                while retry_count > 0:
+                    try:
+                        r = requests.get(url)
+                        if r.url == INVALID_URL:
+                            logging.error("ERR not found: " + RMP_UNI + str(i))
+                            break
+                        soup = BeautifulSoup(r.content, 'html.parser')
+                        x += 1
+                        retry_count = 0
 
-            # Too many ConnectionReset Errors, retry with t.sleep(0.33)
-            except ConnectionResetError as ex:
-                if retry_count <= 0:
-                    print("Failed::: " + url + "\t" + str(ex))
-                else:
-                    retry_count -= 1
-                time.sleep(0.33)
+                    # Too many ConnectionReset Errors, retry with t.sleep(0.33)
+                    except ConnectionResetError as ex:
+                        if retry_count <= 0:
+                            print("Failed::: " + url + "\t" + str(ex))
+                        else:
+                            retry_count -= 1
+                        time.sleep(0.33)
+
+                    title = soup.find_all('div', {'class': 'result-text'})[0].getText()
+                    if not title:
+                        raise IndexError
 
             except IndexError:
-                logging.warning("URL NOT FOUND: " + str(i))
+                logging.warning("ERR No Name found: " + str(i))
                 continue
 
-        title = re.sub('\r+\n+\t+', '', title)
+            title = re.sub('\r+\n+\t+', '', title)
 
-        # Write University document to DB
-        university = University(title=title, uid=i)
-        # university.save()
+            # Write University document to DB
+            university = University(title=title, uid=i)
+            # university.save()
 
-        # Log Status
-        logging.warning("U--\r{0}".format((float(i) / 6050) * 100))
-        # logging.warning("Success: " + str(i))
-        uni_list.append(university)
+            # Log Status
+            logging.warning("U--\r{0}".format((float(i) / (batch * batch_size) * 100)))
+            # logging.warning("Success: " + str(i))
+            uni_list.append(university)
 
-    # Bulk insert universities' list
+            i += 1
+
+        batch -= 1
+
+    # Insert universities' list
     University.objects.insert(uni_list)
 
     # Log time taken to insert
     finish = time.time()
-    logging.warning("Universities' inserted--time taken--" + str(start-finish))
+    logging.warning("Universities' inserted--time taken--" + str(start - finish))
 
     prof_list = []
 
