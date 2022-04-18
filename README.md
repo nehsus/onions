@@ -1,4 +1,3 @@
-## Opinions for everyone
 #### For CS521 at the University of Illinois, Chicago
 
 # Opinions
