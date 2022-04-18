@@ -77,7 +77,7 @@ def get_all_scores(pid: int):
     f_score = preprocessing.get_happiness_score_professor_flair(professor)
     r_score = Professor.objects(pid=pid).first().overall_rating
 
-    preprocessing.get_bar_graph(professor.name, v_score, f_score, r_score)
+    # preprocessing.get_bar_graph(professor.name, v_score, f_score, r_score)
     return jsonify({
         'status': 1,
         'data': {

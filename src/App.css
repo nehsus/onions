@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  text-align: left;
 }
 
 .App-logo {
@@ -18,9 +18,11 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
+  padding-left: 50px;
+  padding-right: 50px;
+  justify-content: space-evenly;
   font-size: calc(10px + 2vmin);
-  justify-content: center;
   flex-wrap: wrap;
   color: white;
 }
@@ -29,29 +31,34 @@
   display: flex;
   background-color: #282c34;
   flex-direction: row;
-  font-size: calc(6px + 1vmin)/3;
-  justify-content: center;
+  font-size: calc(12px + 1vmin);
+  align-items: center;
   color: white;
 }
 
-.score-area {
-  display: flex;
-  background-color: #282c34;
-  flex-direction: column;
-  font-size: calc(6px + 1vmin)/3;
+.component-area {
+  align-items: center;
   justify-content: center;
-  color: white;
+  text-align: center;
+}
+.chart-area {
+  width: '100%';
+  padding-left: 50px;
+  align-items: center;
+}
+
+.comments-area {
   width: 500px;
+  height: 500px;
+  overflow-y: scroll;
 }
 
-.App-link {
-  color: #61dafb;
+.plot-area {
+  display: inline-block;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+

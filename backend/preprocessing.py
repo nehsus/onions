@@ -58,7 +58,7 @@ def get_happiness_score_professor_flair(professor):
     else:
         total = 0
 
-    return total / count
+    return total
 
 
 def get_happiness_score_professor(professor):

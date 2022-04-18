@@ -1,167 +1,150 @@
-import React, { Suspense, Loading, Component } from 'react';
+import React, { Suspense, Loading, Component, useReducer, useState, useEffect } from 'react';
 import './App.css';
 import Autocomplete from './Complete'
 import AutoComplete from './Completee'
 
+import Chart from './Chart';
 
-export default class App extends Component {
+export default function App() {
 
-  constructor(props) {
-    super(props)
+  const [s1, sets1] = useState(true);
+  const [s2, sets2] = useState(false);
+  const [s3, sets3] = useState(false);
+  const [s4, sets4] = useState(false);
+  const [s1data, sets1data] = useState([]);
+  const [s2data, sets2data] = useState([]);
+  const [s3data, sets3data] = useState([]);
+  const [c1, setc1] = useState();
+  const [c2, setc2] = useState();
+  const [c3, setc3] = useState();
+  const [chart, setchart] = useState([])
+  
 
-    this.state = {
-      s1data: [],
-      s2data: [],
-      s3data: [],
-      s1: true,
-      s2: false,
-      s3: false,
-      c1: 0,
-      c2: 0,
-      c3: 0, 
-    }
+  console.log("getting data..")
 
-    this.hideComponent = this.hideComponent.bind(this);
-    }
+  const fetchProfessors = async (uid) => {
+    const response = await fetch('/api/get/professors/' + uid);
+    const newData = await response.json();
+    sets1(!s1);
+    sets2data(newData.data);
+    sets2(!s2);
+  };
 
-  hideComponent(name, item) {
+  const fetchScores = async (pid) => {
+    const response = await fetch('api/get/scores/' + pid);
+    const newData = await response.json();
+    setc1(newData.data.vader);
+    setc2(newData.data.flair);
+    setc3(newData.data.rmp);
+
+    console.log("score is :"+newData.data.vader)
+    const data = [
+      {year: 2, sales: newData.data.vader},
+      {year: 3, sales: newData.data.flair},
+      {year: 4, sales: newData.data.rmp}
+    ]
+    setchart(data)
+  };
+
+  const fetchComments = async (pid) => {
+    const response = await fetch('/api/get/comments/' + pid);
+    const newData = await response.json();
+    sets2(!s2);
+    sets4(!s4);
+    sets3data(newData.data);
+    sets3(!s3);
+  };
+
+  useEffect(() => {
+    const fetchData = async (pid) => {
+      const response = await fetch('/api/get/universities/all');
+      const newData = await response.json();
+      sets1data(newData.data);
+    };
+
+    fetchData();
+  }, []);
+
+  const hideComponent = (name, item) => {
     console.log("Getting professor from uni: "+item)
     switch (name) {
       case "s1":
-        this.setState({ 
-          s1: !this.state.s1,
-          s2: !this.state.s2 
-        });
-        fetch('/api/get/professors/'+item).then(res => res.json().then(
-          data => {
-            console.log(data.data)
-            this.setState({
-            s2data: data.data
-            }); //() => {  console.log(this.state.s1data);});
-          }
-          
-        ));
+        fetchProfessors(item);
         break;
-      case "s2":
-        this.setState({ 
-          s2: !this.state.s2,
-          s3: !this.state.s3,
-         });
-        fetch('/api/get/comments/'+item.pid).then(res => res.json().then(
-          data => {
-            console.log(data.data)
-            this.setState({
-            s3obj: item,
-            s3data: data.data
-            }); //() => {  console.log(this.state.s1data);});
-          }
-        ));
-
-        fetch('/api/get/scores/'+item.pid).then(res => res.json().then(
-          data => {
-            console.log(data.data)
-            this.setState({
-              c1: data.data.vader,
-              c2: data.data.flair,
-              c3: data.data.rmp,
-            }); //() => {  console.log(this.state.s1data);});
-          }
-        ));
-          
+      case "s2":        
+        fetchScores(item.pid);
+        fetchComments(item.pid);
         break;
       default:
         break;
     };
   };
 
-  componentDidMount() {
-    const requestOptions = {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    };
-
-    console.log("getting data")
-    fetch('/api/get/universities/all', requestOptions).then(res => res.json().then(
-      data => {
-        console.log(data.data)
-        this.setState({
-        s1data: data.data
-        }); //() => {  console.log(this.state.s1data);});
-      }
-      
-    ));
-      
-    
-    
-    // this.setState({items: data});
-   
-  }
-
-  getRandomInt(max) {
-    return Math.floor(Math.random() * max);
-  }
-
-  loadComponents() {
-    const {s1data, s1, s2, s2data, s3, s3data, s3obj, c1, c2, c3} = this.state
-
+  
+  const loadComponents = () => {
 
     console.log(s1data.length)
     return (
 
         <div className="component-area">
           {s1 && <div>
-            <h1>Search for University</h1>
-            <Autocomplete suggestions={s1data} onClicked={(name, item) => this.hideComponent(name, item)}/>
+            <h1>Search a University</h1>
+            <Autocomplete suggestions={s1data} onClicked={(name, item) => hideComponent(name, item)}/>
           </div>}
 
           {s2&& <div>
-            <h1>Search for Professor</h1>
-            <AutoComplete suggestions={s2data} onClicked={(name, item) => this.hideComponent(name, item)} />
-          </div>}
-          
-          {s3&& <div className="a-area">
-              <div className="score-area">
-         <div className="chart-area">
-
-        </div>      
-			
-              </div>
-              
-              <div className="comments-area">
-              <h4>Top Comments</h4>
-                <ul>{s3data !== [] && s3data.map(item => {
-                    return (
-                <li key = {this.getRandomInt(9999999)}> {item} </li>
-                  )
-                })}
-                </ul>
-              </div>
-        
+            <h1>Search a Professor</h1>
+            <AutoComplete suggestions={s2data} onClicked={(name, item) => hideComponent(name, item)} />
           </div>}
                  
         </div>
      
     )
   };
-
-  render() {
+    
     return (
       <div className="App">
         <header className="App-header">
         
         <div className="main-area">
           <Suspense fallback={<Loading />}>
-            {this.loadComponents()}
+            {loadComponents()}
           </Suspense>
           
+          {s3&& 
+          <div className="a-area">
+
+              <div className="comments-area">
+                <h4>Top Comments</h4>
+                <ul>{s3data.length > 0 && s3data.map(item => {
+                    return (
+                <li key = {getRandomInt(9999999)}> {item} </li>
+                  )
+                })}
+                </ul>
+              </div>
+
+             <div className="chart-area">
+              {s4&& s3data.length > 0 &&
+                  <div className=".svg-area">
+                    {/* <button onClick={forceUpdate}>Force update</button> */}
+                    <Chart data={
+                      chart
+                    } />
+                  </div>}
+              </div> 
+        
+          </div>}
+
         </div>
   
-        </header>
-
-        
+        </header>  
 
       </div>
     );
-  }
   
+}
+
+const getRandomInt = (max) => {
+  return Math.floor(Math.random() * max);
 }
