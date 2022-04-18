@@ -2,6 +2,7 @@ import logging
 
 from flask import jsonify
 
+import analysis
 import worker
 from model import University, Professor
 from util import read_file
@@ -42,3 +43,7 @@ def add_professor():
         'data': err
     })
 
+
+def analyze_professor(pid: int):
+    comments = Professor.comments(pid=str(pid))
+    return analysis.analyze_comments(comments)

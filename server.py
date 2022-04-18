@@ -35,5 +35,10 @@ def add_professor():
     return repo.add_professor()
 
 
+@app.route('/api/analyze/<pid>')
+def analyze_professor(pid: int):
+    return repo.analyze_professor(pid)
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(5001), debug=True, use_reloader=False)
