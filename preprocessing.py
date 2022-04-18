@@ -4,18 +4,37 @@ from better_profanity import profanity
 
 import nltk
 
+import matplotlib.pyplot as plt
+
 from nltk.sentiment import SentimentIntensityAnalyzer
 from flair.models import TextClassifier
 from flair.data import Sentence
 
-nltk.download('stopwords')
-nltk.download('punkt')
+from model import Professor
 
 sia = SentimentIntensityAnalyzer()
 classifier = TextClassifier.load('en-sentiment')
 
 
-def get_happiness_score_professor_flair(professor):
+def get_bar_graph(professor_name, our_score, rmp_score, flair_score):
+    data = {'opinions': our_score, 'RMP': rmp_score, 'FLair': flair_score}
+    ratings = list(data.keys())
+    values = list(data.values())
+
+    fig = plt.figure(figsize=(10, 5))
+
+    # creating the bar plot
+    plt.bar(ratings, values, color='maroon',
+            width=0.4)
+
+    plt.xlabel("professor_name")
+    plt.ylabel("Ratings out of 5")
+    plt.title("Comparing different ratings")
+    plt.show()
+
+
+def get_happiness_score_professor_flair(pid):
+    professor = Professor.objects(pid=pid).first()
     processed_comments = preprocess_comments(list(professor.comments))
     old_range = 2
     new_range = 5
@@ -23,15 +42,15 @@ def get_happiness_score_professor_flair(professor):
     total = 0
     for j in processed_comments:
         sentence = Sentence(j)
-        #print(sentence)
+        # print(sentence)
         classifier.predict(sentence)
         label = sentence.labels
         items = str(label[0]).split("→")[1].split(" ")
-        #print(items)
+        # print(items)
         if items[1] == 'POSITIVE':
-            old_value = float(items[2][1:len(items[2])-1])
+            old_value = float(items[2][1:len(items[2]) - 1])
         else:
-            old_value = -1 * float(items[2][1:len(items[2])-1])
+            old_value = -1 * float(items[2][1:len(items[2]) - 1])
 
         new_value = ((old_value - (-1)) * new_range) / old_range
         total += new_value
@@ -42,10 +61,11 @@ def get_happiness_score_professor_flair(professor):
     else:
         total = 0
 
-    return total/count
+    return total / count
 
 
-def get_happiness_score_professor(professor):
+def get_happiness_score_professor(pid):
+    professor = Professor.objects(pid=pid).first()
     sentiment_intensity_analyzer = sia
     count = 0
     total = 0
@@ -114,8 +134,11 @@ def get_best_comments(comments):
     print(F"{positive / size:.2%} correct")
     return best
 
-# if __name__ == "__main__":
-#     # print(get_happiness_score_professor("Salvatore Ferrugia"))
-#     print(get_happiness_score_university("Adelphi University"))
+
+if __name__ == "__main__":
+    opinion_score = get_happiness_score_professor(778468)
+    flair_score = get_happiness_score_professor_flair(778468)
+    get_bar_graph("abx", opinion_score, flair_score, 2.5)
+    # print(get_happiness_score_university("Adelphi University"))
 #     # _reviews = preprocess_comments()
 #     # training_model(_reviews)
