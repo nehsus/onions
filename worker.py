@@ -36,7 +36,7 @@ def insert_university_worker():
             soup = appeal(url)
             title = ''
 
-            if soup is not '':
+            if soup != '':
                 try:
                     title = soup.find_all('div', {'class': 'result-text'})[0].getText()
                     if not title:
@@ -123,7 +123,7 @@ def insert_comments_worker(pid: int, title: str):
     url = RMP_PROF + str(pid)
 
     soup = appeal(url)
-    if soup is not '':
+    if soup != '':
 
         table = soup.find_all('div', attrs={'class': 'Rating__RatingBody-sc-1rhvpxz-0 dGrvXb'})
         for item in table:

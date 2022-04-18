@@ -1,20 +1,19 @@
 from better_profanity import profanity
 
 import nltk
+
 from nltk.sentiment import SentimentIntensityAnalyzer
 
-from model import Professor, University
+nltk.download('stopwords')
 
 
-def get_happiness_score_professor(professor_name):
+def get_happiness_score_professor(professor):
     sentiment_intensity_analyzer = SentimentIntensityAnalyzer()
-    professor = Professor.objects(name=professor_name).first()
-    # print(professor.comments)
     count = 0
     total = 0
     old_range = 2
     new_range = 5
-    processed_comments = preprocess_comments(professor.comments)
+    processed_comments = preprocess_comments(list(professor.comments))
     for comment in processed_comments:
         old_value = sentiment_intensity_analyzer.polarity_scores(comment)["compound"]
         new_value = ((old_value - (-1)) * new_range) / old_range
@@ -29,19 +28,15 @@ def get_happiness_score_professor(professor_name):
     return total
 
 
-def get_happiness_score_university(university_name):
-    university = University.objects(title=university_name).first()
-
-    professors_list = list(Professor.objects(university=university))
+def get_happiness_score_university(professors_list):
     count = 0
     total = 0
     for professor in professors_list:
-        curr_professor_rating = get_happiness_score_professor(professor.name)
+        curr_professor_rating = get_happiness_score_professor(professor)
         if curr_professor_rating != 0:
             total += curr_professor_rating
             count += 1
 
-    print(total)
     return total / count
 
 
@@ -59,8 +54,7 @@ def preprocess_comments(initial_reviews):
 
 
 # if __name__ == "__main__":
-#
-#     print(get_happiness_score_professor("Salvatore Ferrugia"))
-#     # print(get_happiness_score_university("Adelphi University"))
+#     # print(get_happiness_score_professor("Salvatore Ferrugia"))
+#     print(get_happiness_score_university("Adelphi University"))
 #     # _reviews = preprocess_comments()
 #     # training_model(_reviews)

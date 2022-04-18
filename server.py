@@ -25,6 +25,21 @@ def get_current_time():
     return {'time': time.time()}
 
 
+@app.route('/api/get/universities/all')
+def get_universities():
+    return repo.get_universities()
+
+
+@app.route('/api/get/professors/<uid>')
+def get_professors(uid: str):
+    return repo.get_professors(int(uid))
+
+
+@app.route('/api/get/comments/<pid>')
+def get_comments(pid: str):
+    return repo.get_comments(int(pid))
+
+
 @app.route('/api/add/university/all')
 def add_university():
     return repo.add_university()
@@ -35,10 +50,15 @@ def add_professor():
     return repo.add_professor()
 
 
-@app.route('/api/analyze/<pid>')
-def analyze_professor(pid: int):
-    return repo.analyze_professor(pid)
+@app.route('/api/score/professor/<pid>')
+def score_professor(pid: int):
+    return repo.get_happiness_score_professor(pid)
+
+
+@app.route('/api/score/university/<uid>')
+def score_university(uid: int):
+    return repo.get_happiness_score_university(uid)
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(5001), debug=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=int(5001), debug=True, use_reloader=True)
