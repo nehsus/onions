@@ -10,8 +10,6 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 from flair.models import TextClassifier
 from flair.data import Sentence
 
-from model import Professor
-
 sia = SentimentIntensityAnalyzer()
 classifier = TextClassifier.load('en-sentiment')
 
@@ -33,8 +31,7 @@ def get_bar_graph(professor_name, our_score, rmp_score, flair_score):
     plt.show()
 
 
-def get_happiness_score_professor_flair(pid):
-    professor = Professor.objects(pid=pid).first()
+def get_happiness_score_professor_flair(professor):
     processed_comments = preprocess_comments(list(professor.comments))
     old_range = 2
     new_range = 5
@@ -64,8 +61,7 @@ def get_happiness_score_professor_flair(pid):
     return total / count
 
 
-def get_happiness_score_professor(pid):
-    professor = Professor.objects(pid=pid).first()
+def get_happiness_score_professor(professor):
     sentiment_intensity_analyzer = sia
     count = 0
     total = 0
@@ -134,11 +130,11 @@ def get_best_comments(comments):
     print(F"{positive / size:.2%} correct")
     return best
 
-
-if __name__ == "__main__":
-    opinion_score = get_happiness_score_professor(778468)
-    flair_score = get_happiness_score_professor_flair(778468)
-    get_bar_graph("abx", opinion_score, flair_score, 2.5)
-    # print(get_happiness_score_university("Adelphi University"))
-#     # _reviews = preprocess_comments()
-#     # training_model(_reviews)
+#
+# if __name__ == "__main__":
+#     opinion_score = get_happiness_score_professor(778468)
+#     flair_score = get_happiness_score_professor_flair(778468)
+#     get_bar_graph("abx", opinion_score, flair_score, 2.5)
+#     # print(get_happiness_score_university("Adelphi University"))
+# #     # _reviews = preprocess_comments()
+# #     # training_model(_reviews)

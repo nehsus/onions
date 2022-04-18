@@ -44,6 +44,7 @@ def get_comments(pid: str):
 def get_scores(pid: int):
     return repo.get_all_scores(pid)
 
+
 @app.route('/api/add/university/all')
 def add_university():
     return repo.add_university()

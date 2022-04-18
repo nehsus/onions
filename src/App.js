@@ -1,33 +1,10 @@
-import logo from './logo.svg';
+import React, { Suspense, Loading, Component } from 'react';
 import './App.css';
 import Autocomplete from './Complete'
 import AutoComplete from './Completee'
 
-import React, { Component, Suspense, Loading } from "react";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-const { faker } = require('@faker-js/faker');
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-
-
-class App extends Component {
+export default class App extends Component {
 
   constructor(props) {
     super(props)
@@ -126,63 +103,7 @@ class App extends Component {
 
   loadComponents() {
     const {s1data, s1, s2, s2data, s3, s3data, s3obj, c1, c2, c3} = this.state
-    
 
-     const options = {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: 'Chart.js Bar Chart',
-        },
-      },
-    };
-    
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    
-     const data = {
-      labels,
-      datasets: [
-        {
-          label: 'Dataset 1',
-          data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-          label: 'Dataset 2',
-          data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-          backgroundColor: 'rgba(53, 162, 235, 0.5)',
-        },
-      ],
-    };
-
-    // const options = {
-		// 	animationEnabled: true,
-		// 	theme: "light2",
-		// 	title:{
-		// 		text: "Opinions for everyone!"
-		// 	},
-		// 	axisX: {
-		// 		title: "Frameworks",
-		// 		reversed: false,
-		// 	},
-		// 	axisY: {
-		// 		title: "Score (<=5.0)",
-		// 		includeZero: true,
-		// 		labelFormatter: this.addSymbols
-		// 	},
-		// 	data: [{
-		// 		type: "bar",
-		// 		dataPoints: [
-		// 			{ y:  1, label: "Opinion" },
-		// 			{ y:  2, label: "Flair" },
-		// 			{ y:  3, label: "RateMyProfessor" },
-		// 		]
-		// 	}]
-		// }
 
     console.log(s1data.length)
     return (
@@ -201,7 +122,7 @@ class App extends Component {
           {s3&& <div className="a-area">
               <div className="score-area">
          <div className="chart-area">
-          <Bar options={options} data={data} />;
+
         </div>      
 			
               </div>
@@ -224,23 +145,6 @@ class App extends Component {
   };
 
   render() {
-
-    const options = {
-      title: {
-        text: "Basic Column Chart in React"
-      },
-      data: [{				
-                type: "column",
-                dataPoints: [
-                    { label: "Apple",  y: 10  },
-                    { label: "Orange", y: 15  },
-                    { label: "Banana", y: 25  },
-                    { label: "Mango",  y: 30  },
-                    { label: "Grape",  y: 28  }
-                ]
-       }]
-   };
-
     return (
       <div className="App">
         <header className="App-header">
@@ -261,5 +165,3 @@ class App extends Component {
   }
   
 }
-
-export default App;
