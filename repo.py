@@ -71,18 +71,34 @@ def get_professors(uid: int):
     })
 
 
+def get_all_scores(pid: int):
+    professor = Professor.objects(pid=pid).first()
+    v_score = preprocessing.get_happiness_score_professor(professor)
+    f_score = preprocessing.get_happiness_score_professor_flair(professor)
+    r_score = Professor.objects(pid=pid).first().overall_rating
+    return jsonify({
+        'status': 1,
+        'data': {
+            'vader': v_score,
+            'flair': f_score,
+            'rmp': r_score
+        }
+    })
+
+
 def get_comments(pid: int):
     logging.info("__init__get_comments()")
     comments = list(Professor.objects(pid=pid).first().comments)
+    best_comments = preprocessing.get_best_comments(comments)
     return jsonify({
         'status': 1,
-        'data': comments
+        'data': best_comments
     })
 
 
 def get_happiness_score_professor(pid: int):
     professor = Professor.objects(pid=pid).first()
-    score = preprocessing.get_happiness_score_professor(professor)
+    score = preprocessing.get_happiness_score_professor_flair(professor)
     return jsonify({
         'status': 1,
         'data': score

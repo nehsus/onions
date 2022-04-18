@@ -15,3 +15,5 @@ old/
 dev.env
 prod.env
 .flaskenv
+
+node_modules/

@@ -1,14 +1,52 @@
+from statistics import mean
+
 from better_profanity import profanity
 
 import nltk
 
 from nltk.sentiment import SentimentIntensityAnalyzer
+from flair.models import TextClassifier
+from flair.data import Sentence
 
 nltk.download('stopwords')
+nltk.download('punkt')
+
+sia = SentimentIntensityAnalyzer()
+classifier = TextClassifier.load('en-sentiment')
+
+
+def get_happiness_score_professor_flair(professor):
+    processed_comments = preprocess_comments(list(professor.comments))
+    old_range = 2
+    new_range = 5
+    count = 0
+    total = 0
+    for j in processed_comments:
+        sentence = Sentence(j)
+        #print(sentence)
+        classifier.predict(sentence)
+        label = sentence.labels
+        items = str(label[0]).split("→")[1].split(" ")
+        #print(items)
+        if items[1] == 'POSITIVE':
+            old_value = float(items[2][1:len(items[2])-1])
+        else:
+            old_value = -1 * float(items[2][1:len(items[2])-1])
+
+        new_value = ((old_value - (-1)) * new_range) / old_range
+        total += new_value
+        count += 1
+
+    if count > 0:
+        total = total / count
+    else:
+        total = 0
+
+    return total/count
 
 
 def get_happiness_score_professor(professor):
-    sentiment_intensity_analyzer = SentimentIntensityAnalyzer()
+    sentiment_intensity_analyzer = sia
     count = 0
     total = 0
     old_range = 2
@@ -52,6 +90,29 @@ def preprocess_comments(initial_reviews):
 
     return final_reviews
 
+
+def is_positive(comment: str):
+    scores = [
+        sia.polarity_scores(sentence)["compound"]
+        for sentence in nltk.sent_tokenize(comment)
+    ]
+    print(scores)
+    return mean(scores) > 0.2
+
+
+def get_best_comments(comments):
+    best = []
+    positive = 0
+    size = len(comments)
+    print(comments)
+    comments = preprocess_comments(comments)
+    for i in comments:
+        if is_positive(i):
+            positive += 1
+            best.append(i)
+
+    print(F"{positive / size:.2%} correct")
+    return best
 
 # if __name__ == "__main__":
 #     # print(get_happiness_score_professor("Salvatore Ferrugia"))
