@@ -1,16 +1,7 @@
-import json
 import math
 
-import requests
 from constant import *
-
-
-# Get bucket size for current page
-def get_size(uid):
-    page = requests.get(RMP_PAGE + str(1) + RMP_QUERY + str(uid))
-    json_data = json.loads(page.content)
-    size = json_data['remaining'] + 20
-    return size
+from util import appeal
 
 
 # RateMyProfessor init
@@ -26,10 +17,18 @@ class RmP:
         pages = math.ceil(size / 20)
 
         for i in range(1, pages):
-            page = requests.get(RMP_PAGE + str(i) + RMP_QUERY + str(self.uid))
-            json_data = json.loads(page.content)
-            p_list = json_data['professors']
+            url = RMP_PAGE + str(i) + RMP_QUERY + str(self.uid)
+            page = appeal(url, 1)
+            p_list = page['professors']
+
             for item in p_list:
                 data.append(item)
 
         return data
+
+
+def get_size(uid):
+    url = RMP_PAGE + str(1) + RMP_QUERY + str(uid)
+    page = appeal(url, 1)
+    size = page['remaining'] + 20
+    return size

@@ -2,7 +2,7 @@ from server import db
 
 
 # Model for a University
-class University(db.DynamicDocument):
+class University(db.Document):
     title = db.StringField()
     uid = db.IntField()
 
@@ -10,13 +10,13 @@ class University(db.DynamicDocument):
     # comments = db.ListField(db.StringField())
 
     def to_json(self):
-        return {"title": self.name,
+        return {"title": self.title,
                 "uid": self.uid,
                 "comments": ''}
 
 
 # Model for a Professor
-class Professor(db.DynamicDocument):
+class Professor(db.Document):
     name = db.StringField()
     pid = db.IntField()
     dept = db.StringField()

@@ -1,34 +1,44 @@
 import logging
 
+from flask import jsonify
+
 import worker
 from model import University, Professor
+from util import read_file
 
 
 def add_university():
+    logging.info("__init__add_university()")
     uni_list = worker.insert_university_worker()
 
-    _, err = University.objects.insert(uni_list)
-    if err is not None:
+    err = University.objects.insert(uni_list)
+    if err is None:
         logging.error(err)
+        return jsonify({'status': 1, 'data': None})
 
-    return {"status": err}
+    return jsonify({
+        'status': 0,
+        'data': err
+    })
 
 
 def add_professor():
-    prof_list = worker.insert_professor_worker(list(University.objects))
+    logging.info("__init__add_professor()")
+    top_list = read_file('./top_universities.txt')
+    top_objects = list(University.objects(title__in=top_list))
 
-    _, err = Professor.objects.insert(prof_list)
-    if err is not None:
+    prof_list = worker.insert_professor_worker_pool(top_objects[100:300])
+
+    err = Professor.objects.insert(prof_list, load_bulk=False)
+
+    if err is None:
         logging.error(err)
+        return jsonify({'status': 1, 'data': None})
 
-    return {"status": err}
+    logging.info("done!")
 
+    return jsonify({
+        'status': 0,
+        'data': err
+    })
 
-def update_comments():
-    comments = worker.insert_professor_worker(list(Professor.objects))
-
-    _, err = Professor.objects.insert()
-    if err is not None:
-        logging.error(err)
-
-    return {"status": err}
