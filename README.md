@@ -2,10 +2,10 @@
 #### For CS521 at the University of Illinois, Chicago
 TO DO:
 
-- MVC changes for server.py
-- Test data from mongodb
+- ~~MVC changes for server.py~~
+- ~~Test data from mongodb~~
 - NLP
-  - Preprocessing
+  - ~~Preprocessing~~
   - Tokenization / Lemmatization
   - Semantic analysis
   - Opinions / Opinion Scores
