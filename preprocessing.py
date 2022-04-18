@@ -30,7 +30,6 @@ def get_happiness_score_professor(professor_name):
 
 
 def get_happiness_score_university(university_name):
-    sentiment_intensity_analyzer = SentimentIntensityAnalyzer()
     university = University.objects(title=university_name).first()
 
     professors_list = list(Professor.objects(university=university))
@@ -59,9 +58,9 @@ def preprocess_comments(initial_reviews):
     return final_reviews
 
 
-if __name__ == "__main__":
-
-    print(get_happiness_score_professor("Salvatore Ferrugia"))
-    # print(get_happiness_score_university("Adelphi University"))
-    # _reviews = preprocess_comments()
-    # training_model(_reviews)
+# if __name__ == "__main__":
+#
+#     print(get_happiness_score_professor("Salvatore Ferrugia"))
+#     # print(get_happiness_score_university("Adelphi University"))
+#     # _reviews = preprocess_comments()
+#     # training_model(_reviews)
