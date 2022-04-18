@@ -16,7 +16,7 @@
   "scripts": {
     "ui": "react-scripts start",
     "start": "concurrently \"react-scripts start\" \"npm run backend\"",
-    "backend": "cd backend && ~/.venvs/onions/bin/flask run --no-debugger",
+    "backend": "cd backend && opinion_env/bin/flask run --no-debugger",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -27,7 +27,7 @@
       "react-app/jest"
     ]
   },
-  "proxy": "http://127.0.0.1:5001",
+  "proxy": "http://127.0.0.1:5005",
   "browserslist": {
     "production": [
       ">0.2%",

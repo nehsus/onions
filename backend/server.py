@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 
 from dotenv import load_dotenv
@@ -6,7 +7,6 @@ from flask import Flask
 from flask_mongoengine import MongoEngine
 
 import repo
-
 # load environment
 load_dotenv()
 
@@ -66,4 +66,4 @@ def score_university(uid: int):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=int(5001), debug=True, use_reloader=True)
+    app.run(host='0.0.0.0', port=int(5005), debug=True)

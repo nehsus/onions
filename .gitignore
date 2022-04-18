@@ -15,5 +15,6 @@ old/
 dev.env
 prod.env
 .flaskenv
+backend/opinion_env/
 
 node_modules/
