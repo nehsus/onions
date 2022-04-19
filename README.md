@@ -54,6 +54,10 @@ cd ../ &&
 
 1. Datatset creation : We created a list of top 500 US universities from sites like US News. Then from RateMyProfessor.com, we scraped data for all the Computer Science department Professors. Data for professors included : names, their average ratings, class ratings,  and all the comments by different students. All this data was stored in MongoDB.
 
+Please refer the diagram below for a walk through.
+
+![flow](https://user-images.githubusercontent.com/13311417/163927178-3f958aa7-ddf9-4ab5-a208-b7573c2d68a0.png)
+
 2. UI for University and Professor selection : We created a User Interface to select the university and name of Professor for whom you want to see the opinion score.
 
 ![University_selection_page_ui](https://user-images.githubusercontent.com/78128658/163923127-514b6610-471c-4306-9d11-8e9e0067cf9d.jpeg) 
@@ -70,10 +74,9 @@ cd ../ &&
 
 
 ## Results
-Our Results indicate that the opinions' score is almost 80-85% accurate when compared with the actual RateMyProfessor.com ratings.
-The image below shows the comparison of our scores with that of actual RateMyProfessor.com rating for the Professor David Malan:
+Our Results indicate that the opinions' score is almost 80-85% accurate when compared with the actual RateMyProfessor.com ratings. The image below shows the comparison of our scores with that of actual RateMyProfessor.com rating for the Professor David Malan:
 
-![Graphical_comparison](https://user-images.githubusercontent.com/78128658/163923272-7d2458bf-b13e-421a-befa-b0665998e284.jpeg)
+![results](https://user-images.githubusercontent.com/13311417/163926966-036c265d-8ff5-4b33-bfcc-36fec7bbbad6.png)
 
 ## Future work
 Our work opens up path to many more advancements like comparing Rating of all the Universities based on not only the average Professor ratings but it can also include like class difficulty, Course load etc. We are planning to add more features to this in future and make it more helpful for the students so that they can make a better decision in course selection.:)
