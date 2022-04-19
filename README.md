@@ -55,6 +55,7 @@ cd ../ &&
 1. Datatset creation : We created a list of top 500 US universities from sites like US News. Then from RateMyProfessor.com, we scraped data for all the Computer Science department Professors. Data for professors included : names, their average ratings, class ratings,  and all the comments by different students. All this data was stored in MongoDB.
 
 2. UI for University and Professor selection : We created a User Interface to select the university and name of Professor for whom you want to see the opinion score.
+
 ![University_selection_page_ui](https://user-images.githubusercontent.com/78128658/163923127-514b6610-471c-4306-9d11-8e9e0067cf9d.jpeg) 
 
 ![profesor_selection_screen_ui](https://user-images.githubusercontent.com/78128658/163923315-05affe39-3531-48b6-a2f8-423b63ec6f69.jpeg)

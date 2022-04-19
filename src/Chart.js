@@ -15,13 +15,13 @@ function Chart({ data }) {
       const width = 500;
       const margin = { top: 40, right: 30, bottom: 30, left: 40 };
       
-      var xdata = ["","", "Opinion", "distilBERT", "RMP"];
+      var xdata = ["","", "RMP", "Fast-RNN", "NLTK Vader", "distillBERT"];
 
       const x = d3
         .scaleBand()
-        .domain(data.map((d) => d.year))
-        .rangeRound([50, 200])
-        .padding(0.1);
+        .domain(data.map((d) => d.id))
+        .range([40, 350])
+        .padding(0.15);
 
       const y1 = d3
         .scaleLinear()
@@ -63,10 +63,10 @@ function Chart({ data }) {
         .data(data)
         .join("rect")
         .attr("class", "bar")
-        .attr("x", (d) => x(d.year))
+        .attr("x", (d) => x(d.id))
         .attr("width", x.bandwidth())
-        .attr("y", (d) => y1(d.sales))
-        .attr("height", (d) => y1(0) - y1(d.sales));
+        .attr("y", (d) => y1(d.score))
+        .attr("height", (d) => y1(0) - y1(d.score));
     },
     [data.length]
   );
@@ -78,7 +78,7 @@ function Chart({ data }) {
         height: 500,
         width: '100%',
         marginRight: "0px",
-        marginLeft: "20px",
+        marginLeft: "60px",
         paddingTop: "40px"
       }}
     >

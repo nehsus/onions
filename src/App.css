@@ -33,18 +33,30 @@
   flex-direction: row;
   font-size: calc(12px + 1vmin);
   align-items: center;
+  justify-self: center;
   color: white;
 }
 
 .component-area {
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 }
+
+.half {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.left {
+  
+}
 .chart-area {
   width: '100%';
   padding-left: 50px;
-  align-items: center;
+  align-items: stretch;
 }
 
 .comments-area {
@@ -62,3 +74,50 @@
   left: 0;
 }
 
+input {
+  border: 1px solid #999;
+  background-color:#999;
+  padding: 0.5rem;
+  margin-left: 50px;
+  width: 300px;
+}
+
+.no-suggestions {
+  color: #999;
+  padding: 0.5rem;
+}
+
+.suggestions-d {
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #999;
+  border-top-width: 0;
+  list-style: none;
+  margin-top: 0;
+  margin-left: 50px;
+  max-height: 300px;
+  overflow-y: scroll;
+  padding-left: 0;
+  width: calc(300px + 1rem);
+}
+
+.suggestions li {
+  padding: 0.5rem;
+}
+
+.suggestion-active,
+.suggestions li:hover {
+  background-color: steelblue;
+  color: #fae042;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid #999;
+}

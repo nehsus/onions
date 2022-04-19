@@ -74,16 +74,17 @@ def get_professors(uid: int):
 def get_all_scores(pid: int):
     professor = Professor.objects(pid=pid).first()
     v_score = preprocessing.get_happiness_score_professor(professor)
-    f_score = preprocessing.get_happiness_score_professor_flair(professor)
-    r_score = Professor.objects(pid=pid).first().overall_rating
+    b_score = preprocessing.get_happiness_score_professor_distillbert(professor)
+    r_score = preprocessing.get_happiness_score_professor_fastrnn(professor)
+    rmp_score = Professor.objects(pid=pid).first().overall_rating
 
-    # preprocessing.get_bar_graph(professor.name, v_score, f_score, r_score)
     return jsonify({
         'status': 1,
         'data': {
             'vader': v_score,
-            'flair': f_score,
-            'rmp': r_score
+            'bert': b_score,
+            'rnn': r_score,
+            'rmp': rmp_score
         }
     })
 
@@ -100,7 +101,7 @@ def get_comments(pid: int):
 
 def get_happiness_score_professor(pid: int):
     professor = Professor.objects(pid=pid).first()
-    score = preprocessing.get_happiness_score_professor_flair(professor)
+    score = preprocessing.get_happiness_score_professor_distillbert(professor)
     return jsonify({
         'status': 1,
         'data': score

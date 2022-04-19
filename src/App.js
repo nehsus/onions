@@ -2,6 +2,7 @@ import React, { Suspense, Loading, useState, useEffect } from 'react';
 import './App.css';
 import AutoCompleteUniversity from './AutoCompleteUniversity'
 import AutoCompleteProfessor from './AutoCompleteProfessor'
+import ChartUniversity from './ChartUniversity'
 
 import Chart from './Chart';
 /**
@@ -14,19 +15,21 @@ export default function App() {
   const [s2, sets2] = useState(false);
   const [s3, sets3] = useState(false);
   const [s4, sets4] = useState(false);
+  const [inp1, setinp1] = useState("")
   const [s1data, sets1data] = useState([]);
   const [s2data, sets2data] = useState([]);
   const [s3data, sets3data] = useState([]);
   const [c1, setc1] = useState();
   const [c2, setc2] = useState();
   const [c3, setc3] = useState();
+  const [c4, setc4] = useState();
   const [chart, setchart] = useState([])
   
 
   console.log("getting data..")
 
-  const fetchProfessors = async (uid) => {
-    const response = await fetch('/api/get/professors/' + uid);
+  const fetchProfessors = async (p) => {
+    const response = await fetch('/api/get/professors/' + p.uid);
     const newData = await response.json();
     sets1(!s1);
     sets2data(newData.data);
@@ -36,15 +39,17 @@ export default function App() {
   const fetchScores = async (pid) => {
     const response = await fetch('api/get/scores/' + pid);
     const newData = await response.json();
-    setc1(newData.data.vader);
-    setc2(newData.data.flair);
-    setc3(newData.data.rmp);
+    setc1(newData.data.rmp);
+    setc2(newData.data.rnn);
+    setc3(newData.data.vader);
+    setc3(newData.data.bert);
 
     console.log("score is :"+newData.data.vader)
     const data = [
-      {year: 2, sales: newData.data.vader},
-      {year: 3, sales: newData.data.flair},
-      {year: 4, sales: newData.data.rmp}
+      {id: 2, score: newData.data.rmp},
+      {id: 3, score: newData.data.rnn},
+      {id: 4, score: newData.data.vader},
+      {id: 5, score: newData.data.bert}
     ]
     setchart(data)
   };
@@ -72,6 +77,7 @@ export default function App() {
     console.log("Getting professor from uni: "+item)
     switch (name) {
       case "s1":
+        setinp1(item);
         fetchProfessors(item);
         break;
       case "s2":        
@@ -89,11 +95,18 @@ export default function App() {
         
         <div className="main-area">
           <Suspense fallback={<Loading />}>
-            <div className="component-area">
+            <div className={s1 ? "component-area" : "component-area"}>
               {s1 && <div>
               <h1>Search a University</h1>
               <AutoCompleteUniversity suggestion={s1data} onClicked={(name, item) => hideComponent(name, item)}/>
               </div>}
+              
+              {/* {s2&& <div className="left">
+                <h2>{inp1.title}</h2>
+                <ChartUniversity data={
+                      {a: 4.5}
+                    } />
+             </div>} */}
 
               {s2&& <div>
                 <h1>Search a Professor</h1>

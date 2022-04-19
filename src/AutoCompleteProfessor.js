@@ -68,7 +68,8 @@ const AutoCompleteProfessor = (props) => {
     }
 
     return (
-      <Fragment>
+      <div className="suggestions-d">
+        <Fragment>
         <input
           type="text"
           onChange={onChange}
@@ -76,6 +77,8 @@ const AutoCompleteProfessor = (props) => {
         />
         {suggestionsListComponent}
       </Fragment>
+      </div>
+      
     );
 }
 

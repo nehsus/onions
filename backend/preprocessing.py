@@ -11,7 +11,8 @@ from flair.models import TextClassifier
 from flair.data import Sentence
 
 sia = SentimentIntensityAnalyzer()
-classifier = TextClassifier.load('en-sentiment')
+bert = TextClassifier.load('en-sentiment')
+fastrnn = TextClassifier.load('sentiment-fast')
 
 
 def get_bar_graph(professor_name, our_score, rmp_score, flair_score):
@@ -31,7 +32,7 @@ def get_bar_graph(professor_name, our_score, rmp_score, flair_score):
     plt.show()
 
 
-def get_happiness_score_professor_flair(professor):
+def get_happiness_score_professor_fastrnn(professor):
     processed_comments = preprocess_comments(list(professor.comments))
     old_range = 2
     new_range = 5
@@ -40,7 +41,37 @@ def get_happiness_score_professor_flair(professor):
     for j in processed_comments:
         sentence = Sentence(j)
         # print(sentence)
-        classifier.predict(sentence)
+        fastrnn.predict(sentence)
+        label = sentence.labels
+        items = str(label[0]).split("→")[1].split(" ")
+        # print(items)
+        if items[1] == 'POSITIVE':
+            old_value = float(items[2][1:len(items[2]) - 1])
+        else:
+            old_value = -1 * float(items[2][1:len(items[2]) - 1])
+
+        new_value = ((old_value - (-1)) * new_range) / old_range
+        total += new_value
+        count += 1
+
+    if count > 0:
+        total = total / count
+    else:
+        total = 0
+
+    return total
+
+
+def get_happiness_score_professor_distillbert(professor):
+    processed_comments = preprocess_comments(list(professor.comments))
+    old_range = 2
+    new_range = 5
+    count = 0
+    total = 0
+    for j in processed_comments:
+        sentence = Sentence(j)
+        # print(sentence)
+        bert.predict(sentence)
         label = sentence.labels
         items = str(label[0]).split("→")[1].split(" ")
         # print(items)
@@ -113,22 +144,26 @@ def is_positive(comment: str):
         for sentence in nltk.sent_tokenize(comment)
     ]
     print(scores)
-    return mean(scores) > 0.2
+    return mean(scores) > 0.2, mean(scores)
 
 
 def get_best_comments(comments):
     best = []
+    scrs = []
     positive = 0
-    size = len(comments)
-    print(comments)
-    comments = preprocess_comments(comments)
-    for i in comments:
-        if is_positive(i):
+    size = len(comments) or 1
+    comments2 = preprocess_comments(comments)
+    for i in range(len(comments2)):
+        p, scr = is_positive(comments2[i])
+        if p:
             positive += 1
-            best.append(i)
+            best.append(comments[i])
+            scrs.append(scr)
 
     print(F"{positive / size:.2%} correct")
-    return best
+
+    best_ordered = [x for _, x in sorted(zip(scrs, best))]
+    return best_ordered
 
 #
 # if __name__ == "__main__":

@@ -33,7 +33,7 @@ const AutoCompleteUniversity = (props) => {
     updateFilteredSuggestion();
     updateShowSuggestion(false);
     updateUserInput(item.title);
-    props.onClicked("s1", item.uid);
+    props.onClicked("s1", item);
   };
 
     let suggestionsListComponent;
@@ -68,7 +68,8 @@ const AutoCompleteUniversity = (props) => {
     }
 
     return (
-      <Fragment>
+      <div className="suggestions-d">
+        <Fragment>
         <input
           type="text"
           onChange={onChange}
@@ -76,6 +77,8 @@ const AutoCompleteUniversity = (props) => {
         />
         {suggestionsListComponent}
       </Fragment>
+      </div>
+      
     );
 }
 
