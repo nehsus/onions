@@ -1,4 +1,5 @@
 import logging
+import os
 
 from flask import jsonify
 
@@ -26,7 +27,8 @@ def add_university():
 
 def add_professor():
     logging.info("__init__add_professor()")
-    top_list = read_file('/Users/nehsus/Documents/acrux2.nosync/onions/backend/top_universities.txt')
+    path = os.getcwd() + '/backend/top_universities.txt'
+    top_list = read_file(path)
     top_objects = list(University.objects(title__in=top_list))
 
     prof_list = worker.insert_professor_worker_pool(top_objects[300:])
@@ -52,7 +54,9 @@ def analyze_professor(pid: int):
 
 def get_universities():
     logging.info("__init__get_universities()")
-    top_list = read_file('/Users/nehsus/Documents/acrux2.nosync/onions/backend/top_universities.txt')
+    path = os.getcwd() + '/backend/top_universities.txt'
+    top_list = read_file(path)
+    # logging.warning(os.getcwd())
     top_objects = list(University.objects(title__in=top_list))
     return jsonify({
         'status': 1,
