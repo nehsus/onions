@@ -6,8 +6,6 @@
 Opinions shows you the happiness/satisfaction index on scale of 1 - 10 for top 500 US universities based on their professors' rating. 
 In addition to the universities, you can also find the individual professor rating for any of those universities.
 
-Python with MongoDB for database and React for frontend
-
 ## Features
 - Select a university from the dropdown
 - See its happiness/satisfaction index
@@ -28,13 +26,13 @@ And of course Opinions itself is open source for future research.
 
 ## Installation
 
-```sh
+```bash
 git clone https://github.com/nehsus/opinions
 cd opinions
 ./run.sh or bash run.sh
 ```
 run.sh:
-```sh
+```bash
 #!/bin/bash
 echo "Initializing backend.."
 cd backend && 
@@ -49,6 +47,13 @@ cd ../ &&
     echo "done!" &&
     npm run start
 ```
+Known issues:
+- Circular import error: 
+  - Fix by opening backend/ in an IDE (Pycharm) and running server.py using opinion_venv as interpreter
+  - Run front-end separately with ```npm run ui```
+  
+- NLTK missing corpora: ```nltk.download()```
+  - Run front-end separately with ```npm run ui```
 
 ## Summary of steps involved:
 
