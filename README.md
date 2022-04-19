@@ -9,20 +9,35 @@ In addition to the universities, you can also find the individual professor rati
 ## Features
 - Select a university from the dropdown
 - See its happiness/satisfaction index
-- Select a professor from that university
-- See his/her rating
+- Select a professor from that university 
+- See their analysis charts
 - Make your decision
 
-## Tech
+## Requirements
 
 Opinions uses many open source technologies to show you what you asked for:
 
 - [ReactJS] - HTML enhanced for web apps!
 - [Python] - makes the magic happen
-- [mongoDB] - NoSQL db to make our lives easier
+- [mongoDB Atlas] - NoSQL db to make our lives easier (.env containing host info is required)
 
-And of course Opinions itself is open source for future research.
+Please refer the .env below to create your configuration
+```bash
+STATIC_FOLDER='./dist/static'
+TEMPLATE_FOLDER='./dist'
+MONGODB_URI='mongodb+srv://uic:<API_KEY>@<URL>/onions?retryWrites=true&w=majority'
+```
+Important libraries:
 
+- [Flask] - not-so-tiny webserver
+- [BeautifulSoup] - scrape all the web
+- [NLTK] - preprocessing, sentiment analyser
+- [Flair] - distilBERT/text sentiment classifier
+- [BetterProfanity] - preprocessing, bad word remover
+- [MongoEngine] - for everything that's mongodb
+- [d3.js] - graphing library
+
+Opinions is open source for future work.
 
 ## Installation
 
