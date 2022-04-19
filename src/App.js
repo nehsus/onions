@@ -1,10 +1,13 @@
-import React, { Suspense, Loading, Component, useReducer, useState, useEffect } from 'react';
+import React, { Suspense, Loading, useState, useEffect } from 'react';
 import './App.css';
-import Autocomplete from './Complete'
-import AutoComplete from './Completee'
+import AutoCompleteUniversity from './AutoCompleteUniversity'
+import AutoCompleteProfessor from './AutoCompleteProfessor'
 
 import Chart from './Chart';
-
+/**
+ * Entrypoint: functional react app
+ * @returns App
+ */
 export default function App() {
 
   const [s1, sets1] = useState(true);
@@ -80,35 +83,24 @@ export default function App() {
     };
   };
 
-  
-  const loadComponents = () => {
-
-    console.log(s1data.length)
-    return (
-
-        <div className="component-area">
-          {s1 && <div>
-            <h1>Search a University</h1>
-            <Autocomplete suggestions={s1data} onClicked={(name, item) => hideComponent(name, item)}/>
-          </div>}
-
-          {s2&& <div>
-            <h1>Search a Professor</h1>
-            <AutoComplete suggestions={s2data} onClicked={(name, item) => hideComponent(name, item)} />
-          </div>}
-                 
-        </div>
-     
-    )
-  };
-    
     return (
       <div className="App">
         <header className="App-header">
         
         <div className="main-area">
           <Suspense fallback={<Loading />}>
-            {loadComponents()}
+            <div className="component-area">
+              {s1 && <div>
+              <h1>Search a University</h1>
+              <AutoCompleteUniversity suggestion={s1data} onClicked={(name, item) => hideComponent(name, item)}/>
+              </div>}
+
+              {s2&& <div>
+                <h1>Search a Professor</h1>
+                <AutoCompleteProfessor suggestion={s2data} onClicked={(name, item) => hideComponent(name, item)} />
+              </div>}
+                    
+            </div>
           </Suspense>
           
           {s3&& 
@@ -127,7 +119,6 @@ export default function App() {
              <div className="chart-area">
               {s4&& s3data.length > 0 &&
                   <div className=".svg-area">
-                    {/* <button onClick={forceUpdate}>Force update</button> */}
                     <Chart data={
                       chart
                     } />
